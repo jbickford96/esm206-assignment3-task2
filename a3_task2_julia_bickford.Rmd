@@ -11,14 +11,6 @@ library(tidyverse)
 library(lubridate)
 ```
 
-## BEFORE YOU START: Save a renamed copy of this .Rmd
-
-- Before moving on, click **File > Save As** to save a copy of this .Rmd (also to the `src` folder in this project) that is updated with your first and last name in the file name (`a3_task2_firstname_lastname.Rmd`). 
-
-- Once you have saved your copy of the .Rmd, you can delete the generic original (if you want...or just leave it there) 
-
-- Run the setup chunk to get the `tidyverse` & `lubridate` packages attached (`lubridate` is a package to make it a bit easier to work with dates & times)
-
 ## Follow along examples
 
 In the following sections, you will first see and run a complete example to learn how a function (or combination of functions) works for data wrangling or visualization. Then, in the paired code chunk immediately below it, you will do it on your own for a new task. 
@@ -56,10 +48,10 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 **Note: You should get a warning about one piece dropped. What happens to the name in Row 49, which contains two dashes? The name after the second dash disappears!
 
 ```{r}
-sw_split_name <- starwars %>% 
-  separate(col = name,
-           into = c("name_1", "name_2"),
-           sep = "-")
+sw_split_name <- starwars %>% #Start with starwars data frame
+  separate(col = name, #Separate name column
+           into = c("name_1", "name_2"), #Into two columns, name_1 and name_2
+           sep = "-") #Separated at the first dash
 ```
 
 #### 1B. Follow me
@@ -91,12 +83,12 @@ In the code chunk below, write code to create a new data frame called `sw_skin_s
 Make sure to `View()` the resulting data frame (remember: run `View()` in the Console, or click on the object name in the Environment) to ensure it worked as expected.
 
 ```{r}
-sw_skin_sep <- starwars %>% 
-  separate(col = skin_color,
-           into = c("skin_1", "skin_2"),
-           sep = ",",
-           extra = "merge",
-           remove = FALSE)
+sw_skin_sep <- starwars %>% #Start from starwards dataframe
+  separate(col = skin_color, #Separate 'skin color' column
+           into = c("skin_1", "skin_2"), #Into two columns, skin_1 and skin_2
+           sep = ",", #Separate at the first comma 
+           extra = "merge", #Merge additional skin colors, if any into second column
+           remove = FALSE) #Do NOT remove original column
 
 ```
 
@@ -131,11 +123,11 @@ mpg_make_model <- mpg %>% # Start with mpg
 In the code chunk below, starting from the `mpg` data create a new data frame called `mpg_model_class` with a new column called `model_class` that combines the `model` and `class` column information, separated by a dash "-". Also add a line (similarly for `separate()` example above) that retains the original columns.
 
 ```{r}
-mpg_model_class <- mpg %>% 
-  unite(col = model_class,
-        c(model, class),
-        sep = "YAY!",
-        remove = FALSE)
+mpg_model_class <- mpg %>% #Start from mpg dataframe
+  unite(col = model_class, #Create a new column called "model_class"
+        c(model, class), #That combines the model and class columns
+        sep = "YAY!", #Put "YAY!" between pieces in new column
+        remove = FALSE) # Do not remove original column
 
 ```
 
@@ -194,8 +186,8 @@ In the code chunk below, create a vector (using `c()`, as above) stored as `some
 
 ```{r}
 
-some_dates <- c(12301956, 11041950, 08311996)
-some_dates_converted <- mdy(some_dates)
+some_dates <- c(12301956, 11041950, 08311996) # Creates a vector of dates w/out spaces
+some_dates_converted <- mdy(some_dates) # Converts to Date class in YYYY-MM-DD format, stores as some_dates_converted
 
 class(some_dates_converted)
 
@@ -220,9 +212,9 @@ lakers_dates <- lakers %>%
 
 # Now run this code to calculate the total points by game_type (home or away) for each *month* in the data:
 
-points_by_month <- lakers_dates %>% 
-  group_by(game_type, month_new) %>% 
-  summarize(total_points = sum(points))
+points_by_month <- lakers_dates %>% # Start from lakers_dates
+  group_by(game_type, month_new) %>% # Group by game_type and month_new
+  summarize(total_points = sum(points)) # Sums the points by game type and month in new column total_points
 
 # View it: 
 points_by_month
@@ -251,6 +243,7 @@ hookshots_by_month <- gasol_hookshots %>%
   group_by(type, month) %>% 
   count(month)
 
+hookshots_by_month
 ```
 
 ### 4. `dplyr::case_when()`
@@ -299,11 +292,10 @@ Note: If you add another condition within `case_when()` that is `TRUE ~ "some th
 
 ```{r}
 storms_danger <- storms %>% 
-  mutate(danger = case_when(
-    status == "hurricane" ~ "high",
-    TRUE ~ "moderate"
+  mutate(danger = case_when(  #new column 'danger' added
+    status == "hurricane" ~ "high", #labels all observations of 'hurricane' in new 'danger' column
+    TRUE ~ "moderate" #all observations not 'hurricane' labeled 'moderate'
     ))
-
 ```
 
 ## 5. Practice version control w/git

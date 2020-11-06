@@ -369,14 +369,6 @@ summary {
 </div>
 
 
-<div id="before-you-start-save-a-renamed-copy-of-this-.rmd" class="section level2">
-<h2>BEFORE YOU START: Save a renamed copy of this .Rmd</h2>
-<ul>
-<li><p>Before moving on, click <strong>File &gt; Save As</strong> to save a copy of this .Rmd (also to the <code>src</code> folder in this project) that is updated with your first and last name in the file name (<code>a3_task2_firstname_lastname.Rmd</code>).</p></li>
-<li><p>Once you have saved your copy of the .Rmd, you can delete the generic original (if you want…or just leave it there)</p></li>
-<li><p>Run the setup chunk to get the <code>tidyverse</code> &amp; <code>lubridate</code> packages attached (<code>lubridate</code> is a package to make it a bit easier to work with dates &amp; times)</p></li>
-</ul>
-</div>
 <div id="follow-along-examples" class="section level2">
 <h2>Follow along examples</h2>
 <p>In the following sections, you will first see and run a complete example to learn how a function (or combination of functions) works for data wrangling or visualization. Then, in the paired code chunk immediately below it, you will do it on your own for a new task.</p>
@@ -404,10 +396,10 @@ sw_sep_hair &lt;- starwars %&gt;% # Start with starwars
 <p>In the code chunk below, write code to create a new data frame called <code>sw_split_name</code>, starting from <code>starwars</code>, that splits the <code>name</code> column into two pieces, <code>name_1</code> and <code>name_2</code>, with a separation at the first <em>dash</em> “-”.</p>
 <p>Make sure to <code>View()</code> the resulting data frame (remember: run <code>View()</code> in the Console, or click on the object name in the Environment) to ensure it worked as expected.</p>
 <p>**Note: You should get a warning about one piece dropped. What happens to the name in Row 49, which contains two dashes? The name after the second dash disappears!</p>
-<pre class="r"><code>sw_split_name &lt;- starwars %&gt;% 
-  separate(col = name,
-           into = c(&quot;name_1&quot;, &quot;name_2&quot;),
-           sep = &quot;-&quot;)</code></pre>
+<pre class="r"><code>sw_split_name &lt;- starwars %&gt;% #Start with starwars data frame
+  separate(col = name, #Separate name column
+           into = c(&quot;name_1&quot;, &quot;name_2&quot;), #Into two columns, name_1 and name_2
+           sep = &quot;-&quot;) #Separated at the first dash</code></pre>
 </div>
 <div id="b.-follow-me" class="section level4">
 <h4>1B. Follow me</h4>
@@ -432,12 +424,12 @@ sw_sep_names &lt;- starwars %&gt;% # Start from starwars data
 <h4>1B. On your own</h4>
 <p>In the code chunk below, write code to create a new data frame called <code>sw_skin_sep</code> that starts from <code>starwars</code>, separates the <code>skin_color</code> column into two columns <code>skin_1</code> and <code>skin_2</code> at the first <em>comma</em>, merging everything after the first comma into the second column and keeping the original <code>skin_color</code> column.</p>
 <p>Make sure to <code>View()</code> the resulting data frame (remember: run <code>View()</code> in the Console, or click on the object name in the Environment) to ensure it worked as expected.</p>
-<pre class="r"><code>sw_skin_sep &lt;- starwars %&gt;% 
-  separate(col = skin_color,
-           into = c(&quot;skin_1&quot;, &quot;skin_2&quot;),
-           sep = &quot;,&quot;,
-           extra = &quot;merge&quot;,
-           remove = FALSE)</code></pre>
+<pre class="r"><code>sw_skin_sep &lt;- starwars %&gt;% #Start from starwards dataframe
+  separate(col = skin_color, #Separate &#39;skin color&#39; column
+           into = c(&quot;skin_1&quot;, &quot;skin_2&quot;), #Into two columns, skin_1 and skin_2
+           sep = &quot;,&quot;, #Separate at the first comma 
+           extra = &quot;merge&quot;, #Merge additional skin colors, if any into second column
+           remove = FALSE) #Do NOT remove original column</code></pre>
 </div>
 </div>
 <div id="tidyrunite" class="section level3">
@@ -462,11 +454,11 @@ mpg_make_model &lt;- mpg %&gt;% # Start with mpg
 <div id="a.-on-your-own-1" class="section level4">
 <h4>2A. On your own</h4>
 <p>In the code chunk below, starting from the <code>mpg</code> data create a new data frame called <code>mpg_model_class</code> with a new column called <code>model_class</code> that combines the <code>model</code> and <code>class</code> column information, separated by a dash “-”. Also add a line (similarly for <code>separate()</code> example above) that retains the original columns.</p>
-<pre class="r"><code>mpg_model_class &lt;- mpg %&gt;% 
-  unite(col = model_class,
-        c(model, class),
-        sep = &quot;YAY!&quot;,
-        remove = FALSE)</code></pre>
+<pre class="r"><code>mpg_model_class &lt;- mpg %&gt;% #Start from mpg dataframe
+  unite(col = model_class, #Create a new column called &quot;model_class&quot;
+        c(model, class), #That combines the model and class columns
+        sep = &quot;YAY!&quot;, #Put &quot;YAY!&quot; between pieces in new column
+        remove = FALSE) # Do not remove original column</code></pre>
 </div>
 </div>
 <div id="parsing-dates-with-lubridate" class="section level3">
@@ -511,8 +503,8 @@ my_dates_converted # Return my_dates_converted</code></pre>
 <div id="b.-on-your-own-1" class="section level4">
 <h4>3B. On your own</h4>
 <p>In the code chunk below, create a vector (using <code>c()</code>, as above) stored as <code>some_dates</code> that contains three values that represent dates as numbers, in mdy format: 11061972, 02142007,01301843. Then in the next line, use <code>lubridate::mdy()</code> to return them in date format, storing as a vector <code>some_dates_converted</code>. Write a third line to check the class of that vector.</p>
-<pre class="r"><code>some_dates &lt;- c(12301956, 11041950, 08311996)
-some_dates_converted &lt;- mdy(some_dates)
+<pre class="r"><code>some_dates &lt;- c(12301956, 11041950, 08311996) # Creates a vector of dates w/out spaces
+some_dates_converted &lt;- mdy(some_dates) # Converts to Date class in YYYY-MM-DD format, stores as some_dates_converted
 
 class(some_dates_converted)</code></pre>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
@@ -532,9 +524,9 @@ lakers_dates &lt;- lakers %&gt;%
 
 # Now run this code to calculate the total points by game_type (home or away) for each *month* in the data:
 
-points_by_month &lt;- lakers_dates %&gt;% 
-  group_by(game_type, month_new) %&gt;% 
-  summarize(total_points = sum(points))
+points_by_month &lt;- lakers_dates %&gt;% # Start from lakers_dates
+  group_by(game_type, month_new) %&gt;% # Group by game_type and month_new
+  summarize(total_points = sum(points)) # Sums the points by game type and month in new column total_points
 
 # View it: 
 points_by_month</code></pre>
@@ -574,7 +566,20 @@ points_by_month</code></pre>
   
 hookshots_by_month &lt;- gasol_hookshots %&gt;% 
   group_by(type, month) %&gt;% 
-  count(month)</code></pre>
+  count(month)
+
+hookshots_by_month</code></pre>
+<pre><code>## # A tibble: 7 x 3
+## # Groups:   type, month [7]
+##   type  month     n
+##   &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 hook      1    19
+## 2 hook      2    16
+## 3 hook      3    20
+## 4 hook      4    14
+## 5 hook     10     2
+## 6 hook     11    14
+## 7 hook     12    10</code></pre>
 </div>
 </div>
 <div id="dplyrcase_when" class="section level3">
@@ -608,9 +613,9 @@ storm_season &lt;- storms %&gt;% # Start from storms data
 <p>Create a new version of storms called <code>storms_danger</code> in which you add a new column <code>danger</code> where if the status matches “hurricane”, then the danger column contains “high”; if the status is anything other than “hurricane”, then the danger column contains “moderate”. <strong>Hint:</strong> remember that when looking for a match, we use <code>==</code>.</p>
 <p>Note: If you add another condition within <code>case_when()</code> that is <code>TRUE ~ &quot;some thing&quot;</code>, then any entry that hasn’t been specified by previous conditions will get that “catch all” statement.</p>
 <pre class="r"><code>storms_danger &lt;- storms %&gt;% 
-  mutate(danger = case_when(
-    status == &quot;hurricane&quot; ~ &quot;high&quot;,
-    TRUE ~ &quot;moderate&quot;
+  mutate(danger = case_when(  #new column &#39;danger&#39; added
+    status == &quot;hurricane&quot; ~ &quot;high&quot;, #labels all observations of &#39;hurricane&#39; in new &#39;danger&#39; column
+    TRUE ~ &quot;moderate&quot; #all observations not &#39;hurricane&#39; labeled &#39;moderate&#39;
     ))</code></pre>
 </div>
 </div>
